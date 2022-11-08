@@ -29,7 +29,8 @@ async function run() {
         res.send(services);
       } else {
         const services = await cursor.toArray();
-        res.send(services);
+        const count = serviceCollection.estimatedDocumentCount();
+        res.send({ count, services });
       }
     });
   } finally {
