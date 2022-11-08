@@ -16,6 +16,28 @@ const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
 });
 
+async function run() {
+  const serviceCollection = client.db("cloudKitchen").collection("services");
+
+  try {
+    app.get("/services", async (req, res) => {
+      const limit = parseInt(req.query.limit);
+      const query = {};
+      const cursor = serviceCollection.find(query);
+      if (limit) {
+        const services = await cursor.limit(limit).toArray();
+        res.send(services);
+      } else {
+        const services = await cursor.toArray();
+        res.send(services);
+      }
+    });
+  } finally {
+  }
+}
+
+run().catch((er) => console.error(er));
+
 app.get("/", (req, res) => {
   res.send("Farid-Kitchen sever is running");
 });
