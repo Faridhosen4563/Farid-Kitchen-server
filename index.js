@@ -63,8 +63,9 @@ async function run() {
       res.send(reviews);
     });
 
-    app.get("/reviews", async (req, res) => {
-      const query = {};
+    app.get("/reviews/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { serviceId: id };
       const option = {
         sort: { date: -1 },
       };
