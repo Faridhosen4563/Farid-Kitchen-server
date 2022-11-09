@@ -82,10 +82,35 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/review/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await reviewsCollection.findOne(query);
+      res.send(result);
+    });
+
     app.delete("/reviews/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await reviewsCollection.deleteOne(query);
+      res.send(result);
+    });
+    app.put("/reviews/:id", async (req, res) => {
+      const id = req.params.id;
+      const review = req.body;
+      console.log(review);
+      const query = { _id: ObjectId(id) };
+      const option = { upsert: true };
+      const updateReview = {
+        $set: {
+          message: review.message,
+        },
+      };
+      const result = await reviewsCollection.updateOne(
+        query,
+        updateReview,
+        option
+      );
       res.send(result);
     });
   } finally {
