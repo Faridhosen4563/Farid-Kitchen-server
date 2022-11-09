@@ -18,6 +18,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   const serviceCollection = client.db("cloudKitchen").collection("services");
+  const reviewsCollection = client.db("cloudKitchen").collection("reviews");
 
   try {
     app.get("/services", async (req, res) => {
@@ -45,6 +46,11 @@ async function run() {
       const query = { _id: ObjectId(id) };
       const service = await serviceCollection.findOne(query);
       res.send(service);
+    });
+
+    app.post("/reviews", async (req, res) => {
+      const review = req.body;
+      console.log(review);
     });
   } finally {
   }
