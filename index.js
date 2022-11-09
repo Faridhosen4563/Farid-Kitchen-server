@@ -51,6 +51,26 @@ async function run() {
     app.post("/reviews", async (req, res) => {
       const review = req.body;
       console.log(review);
+      const doc = {
+        serviceId: review.serviceId,
+        name: review.name,
+        photoUrl: review.photoUrl,
+        email: review.email,
+        date: review.date,
+        message: review.message,
+      };
+      const reviews = await reviewsCollection.insertOne(doc);
+      res.send(reviews);
+    });
+
+    app.get("/reviews", async (req, res) => {
+      const query = {};
+      const option = {
+        sort: { date: -1 },
+      };
+      const cursor = reviewsCollection.find(query, option);
+      const result = await cursor.toArray();
+      res.send(result);
     });
   } finally {
   }
