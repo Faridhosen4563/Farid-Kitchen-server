@@ -19,13 +19,11 @@ const client = new MongoClient(uri, {
 
 function verifyJWT(req, res, next) {
   const authToken = req.headers.authorization;
+  console.log(authToken);
   if (!authToken) {
     return res.status(401).send({ message: "Unauthorized access" });
   }
-  const token = authToken.spilt(" ")[1];
-  if (!token) {
-    return res.status(401).send({ message: "Unauthorized access" });
-  }
+  const token = authToken.split(" ")[1];
   jwt.verify(token, process.env.JWT_ACCESS_TOKEN, function (er, decoded) {
     if (er) {
       return res.status(401).send({ message: "Unauthorized access" });
