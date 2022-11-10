@@ -127,7 +127,7 @@ async function run() {
       const id = req.params.id;
       const query = { serviceId: id };
       const option = {
-        sort: { date: -1 },
+        sort: { _id: -1 },
       };
       const cursor = reviewsCollection.find(query, option);
       const result = await cursor.toArray();
@@ -150,7 +150,6 @@ async function run() {
     app.put("/reviews/:id", verifyJWT, async (req, res) => {
       const id = req.params.id;
       const review = req.body;
-      console.log(review);
       const query = { _id: ObjectId(id) };
       const option = { upsert: true };
       const updateReview = {
